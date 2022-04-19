@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Button from "../../shared/components/FormComponents/Button";
 import Input from "../../shared/components/FormComponents/Input";
 import Card from "../../shared/components/UIElements/Card";
+import { AuthContext } from "../../shared/context/auth-context";
 import { useForm } from "../../shared/hooks/form-hook";
 import {
   VALIDATOR_EMAIL,
@@ -11,6 +12,7 @@ import {
 import "./Auth.css";
 
 function Auth() {
+  const authCtx = useContext(AuthContext);
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [formState, inputHandler, setFormData] = useForm(
     {
@@ -50,16 +52,17 @@ function Auth() {
     setIsLoginMode((prevMode) => !prevMode);
   };
 
-  const loginSubmitHandler = (event) => {
+  const authSubmitHandler = (event) => {
     event.preventDefault();
 
     console.log(formState.inputs);
+    authCtx.login();
   };
   return (
     <Card className="authentication">
       <h2>Login Required</h2>
       <hr />
-      <form className="auth-form" onSubmit={loginSubmitHandler}>
+      <form className="auth-form" onSubmit={authSubmitHandler}>
         {!isLoginMode && (
           <Input
             id="name"
