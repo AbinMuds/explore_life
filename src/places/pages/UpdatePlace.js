@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import Button from "../../shared/components/FormComponents/Button";
@@ -9,6 +9,7 @@ import {
   VALIDATOR_REQUIRE,
 } from "../../shared/util/validators";
 import { useForm } from "../../shared/hooks/form-hook";
+import Card from "../../shared/components/UIElements/Card";
 
 const DUMMY_PLACES = [
   {
@@ -25,8 +26,8 @@ const DUMMY_PLACES = [
     creator: "u1",
   },
   {
-    id: "p1",
-    title: "Empire State Building",
+    id: "p2",
+    title: "Emp. State Building",
     description: "One of the most famous sky scrapers in the world",
     imageUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/The_Empire_State_Building_%2812%29.jpg/449px-The_Empire_State_Building_%2812%29.jpg?20200421163444",
@@ -40,28 +41,60 @@ const DUMMY_PLACES = [
 ];
 
 function UpdatePlace() {
+  const [isLoading, setIsLoading] = useState(true);
   const placeId = useParams().placeId;
+
+  const [formState, inputHandler, setFormData] = useForm(
+    {
+      title: {
+        value: "",
+        isValid: false,
+      },
+      description: {
+        value: "",
+        isValid: false,
+      },
+    },
+    false
+  );
 
   const identifiedPlace = DUMMY_PLACES.find((place) => place.id === placeId);
 
-  const [formState, inputHandler] = useForm(
-    {
-      title: {
-        value: identifiedPlace.title,
-        isValid: true,
-      },
-      description: {
-        value: identifiedPlace.description,
-        isValid: true,
-      },
-    },
-    true
-  );
+  useEffect(() => {
+    if (identifiedPlace) {
+      setFormData(
+        {
+          title: {
+            value: identifiedPlace.title,
+            isValid: true,
+          },
+          description: {
+            value: identifiedPlace.description,
+            isValid: true,
+          },
+        },
+        true
+      );
+    }
+    setIsLoading(false);
+  }, [setFormData, identifiedPlace]);
 
   if (!identifiedPlace) {
     return (
       <div className="center">
-        <h2>Could not find the Place!</h2>
+        <Card>
+          <h2>Could not find the Place!</h2>
+        </Card>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="center">
+        <Card>
+          <h2>Loading...</h2>
+        </Card>
       </div>
     );
   }

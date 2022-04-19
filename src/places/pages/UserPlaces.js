@@ -18,8 +18,8 @@ const DUMMY_PLACES = [
     creator: "u1",
   },
   {
-    id: "p1",
-    title: "Empire State Building",
+    id: "p2",
+    title: "Emp. State Building",
     description: "One of the most famous sky scrapers in the world",
     imageUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/The_Empire_State_Building_%2812%29.jpg/449px-The_Empire_State_Building_%2812%29.jpg?20200421163444",
