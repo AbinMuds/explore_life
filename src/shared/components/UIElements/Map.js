@@ -11,7 +11,7 @@ function Map(props) {
       zoom: zoom,
     });
     new window.google.maps.Marker({ position: props.center, map: map });
-  }, [center, zoom, props.center]);
+  }, [center, zoom, props]);
 
   return (
     <div
